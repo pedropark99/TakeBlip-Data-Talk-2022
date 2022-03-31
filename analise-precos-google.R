@@ -4,7 +4,8 @@ library(tseries)
 library(ggplot2)
 
 
-### Importando os dados
+### Importando os dados --------------------------------------
+##
 load(file = "Dados/goog200.rda")
 
 
@@ -12,6 +13,10 @@ load(file = "Dados/goog200.rda")
 autoplot(goog200)
 
 
+
+
+### Análise dos gráficos FAC e FACP --------------------------
+##
 
 ### A primeira vista, a série parece ser
 ### uma série temporal NÃO ESTACIONÁRIA.
@@ -39,3 +44,9 @@ forecast::Pacf(goog200, main = "FACP", ylab = NA)
 # png("Figuras/facp-ar.png", width = 2400, height = 1200, res = 300, type = "cairo")
 # forecast::Pacf(goog200, main = "FACP", ylab = NA)
 # dev.off()
+
+
+
+
+
+
