@@ -7,28 +7,27 @@ dados <- read_excel("serie-pib-brasil.xlsx")
 dados$PIB <- as.double(dados$PIB)
 dados$Ano <- as.integer(dados$Ano)
 
+dados <- dados %>% 
+  mutate(PIB_em_milhoes = PIB/1e6)
+
 fonte <- "Fonte: Banco Mundial Data."
 
-serie <- ts(dados$PIB, start = 1961, frequency = 1)
+serie <- ts(dados$PIB_em_milhoes, start = 1961, frequency = 1)
 
 plot.ts(serie)
 
 
 
-autoplot(gold) +
+pl <- autoplot(serie) +
   labs(
     y = "",
     x = "",
-    title = "Evolução do preço internacional do Ouro (por Kg)"
+    title = "Evolução do PIB brasileiro (em US$ milhões)"
   )
 
 
-set.seed(10)
-pl <- plot.ts(arima.sim(list(1, 1, 0), n = 120), ylab = NULL)
-
-png("serie-arima.png", width = 2200, height = 1300, res = 300, type = "cairo")
-set.seed(10)
-plot.ts(arima.sim(list(1, 1, 0), n = 120), ylab = NULL)
+png("Figuras/pib.png", width = 2200, height = 1300, res = 300, type = "cairo")
+print(pl)
 dev.off()
 
 
@@ -58,7 +57,7 @@ pl <- ggplot(data = data.frame(x = seq_along(as.double(x)), y = as.double(x))) +
     plot.title.position = "plot"
   )
 
-png("exemplo-serie-estacionaria.png", width = 2200, height = 1300, res = 300, type = "cairo")
+png("Figuras/exemplo-serie-estacionaria.png", width = 2200, height = 1300, res = 300, type = "cairo")
 print(pl)
 dev.off()
 
