@@ -3,7 +3,7 @@ library(readxl)
 library(lubridate)
 library(forecast)
 
-dados <- read_excel("serie-pib-brasil.xlsx")
+dados <- read_excel("Dados/serie-pib-brasil.xlsx")
 dados$PIB <- as.double(dados$PIB)
 dados$Ano <- as.integer(dados$Ano)
 
@@ -26,10 +26,39 @@ pl <- autoplot(serie) +
   )
 
 
-png("Figuras/pib.png", width = 2200, height = 1300, res = 300, type = "cairo")
+png("Figuras/pib.png", width = 2000, height = 1000, res = 300, type = "cairo")
 print(pl)
 dev.off()
 
+
+
+
+
+### Preço diário das ações da Google
+
+load(file = "Dados/goog200.rda")
+
+pl <- autoplot(goog200) +
+  labs(
+    y = "",
+    x = "",
+    title = "Evolução dos preços diários das ações do Google (em US$)"
+  )
+
+
+png("Figuras/preco-acoes-google.png", width = 2000, height = 1000, res = 300, type = "cairo")
+print(pl)
+dev.off()
+
+
+
+
+autoplot(diff(goog200)) +
+  labs(
+    y = "",
+    x = "",
+    title = "Série dos preços diários das ações do Google, em primeira diferença"
+  )
 
 
 
