@@ -53,7 +53,7 @@ dev.off()
 
 
 
-autoplot(diff(goog200)) +
+pl <- autoplot(diff(goog200)) +
   labs(
     y = "",
     x = "",
@@ -61,6 +61,9 @@ autoplot(diff(goog200)) +
   )
 
 
+png("Figuras/diff-preco-acoes-google.png", width = 2000, height = 1000, res = 300, type = "cairo")
+print(pl)
+dev.off()
 
 
 ### Um exemplo de série temporal estacionária:
