@@ -20,6 +20,20 @@ plot.ts(serie)
 
 
 
+### Análise das funções autoregressivas (FAC e FACP):
+# Gráfico da FAC apresenta uma queda lenta e prolongada.
+# Isso indica que a série se encaixa em um processo
+# autoregressivo.
+acf(serie)
+
+# Gráfico da FACP apresenta um grande pico na primeira lag
+# da série, porém, seu valor cai subitamente já a partir da
+# segunda lag. Isso é uma característica clássica de um
+# processo autoregressivo de ordem 1, isto é, um modelo AR(1).
+pacf(serie)
+
+
+
 ### Teste de Raiz Unitária (Dickey-Fuller):
 # Estatística de -1,2335 não foi capaz de rejeitar a hipótese
 # nula do teste;
@@ -33,6 +47,13 @@ serie_df <- diff(serie)
 summary(urca::ur.df(serie_df, type = "none"))
 summary(urca::ur.df(serie_df, type = "drift"))
 summary(urca::ur.df(serie_df, type = "trend"))
+
+
+### Aplicação do modelo:
+modelo <- arima(serie, order = c(1, 1, 0))
+summary(modelo)
+
+
 
 
 pl <- tibble(x = seq_len(n), y = serie) %>% 
