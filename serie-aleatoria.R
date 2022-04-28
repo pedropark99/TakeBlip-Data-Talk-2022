@@ -2,6 +2,9 @@ library(tidyverse)
 library(forecast)
 library(urca)
 
+
+### Série do número diário de usuários ativos (DAUs) -----------------------------
+
 # Número de observações
 n <- 120
 # Componente aleatório
@@ -97,3 +100,61 @@ pl <- autoplot(previsoes) +
 ragg::agg_png("Figuras/serie-aletoria.png", width = 2000, height = 1000, res = 300)
 print(pl)
 dev.off()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+### Série queda nas vendas -------------------------------------
+
+# Número de observações
+n <- 120
+# Componente aleatório
+set.seed(50)
+noise <- rnorm(n, mean = 100, sd = 60)
+# Componente estocástico
+t <- 1:120
+stochastic_component <- (-2.45 * t) + (0.02 * (t ^ 2))
+
+### A série temporal deste exemplo:
+serie <- ts(stochastic_component + noise + 1500)
+plot.ts(serie)
+
+
+
+
+pl <- tibble(x = seq_len(n), y = serie) %>% 
+  ggplot() +
+  geom_line(
+    aes(x = x, y = y)
+  ) +
+  scale_y_continuous(limits = c(0, max(serie) + 200)) +
+  labs(
+    title = "Número diário de doces vendidos",
+    x = "Dias",
+    subtitle = "Um contato inteligente para venda de bolos, doces e salgados"
+  ) +
+  theme(
+    text = element_text(family = "Segoe UI", size = 13, color = "#222222"),
+    plot.subtitle = element_text(family = "Roboto Condensed"),
+    plot.title.position = "plot",
+    plot.title = element_text(face = "bold", size = 16),
+    axis.title.y = element_blank()
+  )
+
+
+
+
+ragg::agg_png("Figuras/vendas-estagnada.png", width = 2000, height = 1000, res = 300)
+print(pl)
+dev.off()
+
