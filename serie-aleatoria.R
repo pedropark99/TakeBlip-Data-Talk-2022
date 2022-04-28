@@ -49,24 +49,48 @@ summary(urca::ur.df(serie_df, type = "drift"))
 summary(urca::ur.df(serie_df, type = "trend"))
 
 
-### Aplicação do modelo:
-modelo <- arima(serie, order = c(1, 1, 0))
+
+
+### Cálculo dos modelos candidatos:
+# Modelo 1:
+modelo <- forecast::Arima(serie, order = c(1, 1, 0))
+summary(modelo)
+
+# Modelo 2:
+modelo <- forecast::Arima(serie, order = c(1, 1, 0), include.drift = TRUE)
+summary(modelo)
+
+# Modelo 3:
+modelo <- forecast::Arima(serie, order = c(0, 1, 1))
+summary(modelo)
+
+# Modelo 4:
+modelo <- forecast::Arima(serie, order = c(0, 1, 1), include.drift = TRUE)
 summary(modelo)
 
 
 
+### O modelo 4 é o que apresenta o meno AIC.
+previsoes <- forecast::forecast(
+  modelo,
+  h = 20   # Número de períodos a frente para serem previstos pelo modelo
+)
 
-pl <- tibble(x = seq_len(n), y = serie) %>% 
-  ggplot() +
-  geom_line(
-    aes(y = y, x = x)
-  ) +
+
+
+
+
+
+pl <- autoplot(previsoes) +
   labs(
-    title = "Número diário de usuários ativos (DAUs)"
+    title = "Número diário de usuários ativos (DAUs)",
+    x = "Dias"
   ) +
   theme(
+    text = element_text(family = "Segoe UI", size = 13, color = "#222222"),
     plot.title.position = "plot",
-    axis.title = element_blank()
+    plot.title = element_text(face = "bold", size = 16),
+    axis.title.y = element_blank()
   )
 
 
