@@ -158,3 +158,53 @@ ragg::agg_png("Figuras/vendas-estagnada.png", width = 2000, height = 1000, res =
 print(pl)
 dev.off()
 
+
+
+
+
+
+
+### Série aumento expressivo nas mensagens -------------------------------------
+
+set.seed(10)
+base <- rnorm(140, mean = 5000, sd = 1500)
+fatores <- c(1, 0.9, 0.82, 0.68, 0.61, 0.55, 0.2)
+fatores <- rep(fatores, times =  20)
+base <- base * fatores
+
+
+### Adicionando uma quebra à série temporal
+base[80:119] <- base[80:119] + c(
+  5200, 4000, 5300, 3600, 3800, 4000, 3800, 3800,
+  4100, 4200, 4300, 4600, 5000, 4200, 5300, 5600,
+  3100, 3000, 3400, 3700, 6200, 6300, 6400, 6000,
+  7000, 6300, 6000, 6500, 7000, 7200, 6300, 5100,
+  5600, 5500, 6200, 7000, 6800, 6000, 6100, 6300
+) + 2000
+
+serie <- base[1:119]
+
+
+pl <- tibble(x = seq_along(serie), y = serie) %>% 
+  ggplot() +
+  geom_line(
+    aes(x = x, y = y)
+  ) +
+  labs(
+    title = "Número de mensagens enviadas pelo contato inteligente",
+    x = "Dias",
+    subtitle = "Porque o número de mensagens subiu drasticamente se o número de\nusuários permaneceu o mesmo?"
+  ) +
+  theme(
+    text = element_text(family = "Segoe UI", size = 13, color = "#222222"),
+    plot.subtitle = element_text(family = "Roboto Condensed", margin = margin(b = 20)),
+    plot.title.position = "plot",
+    plot.title = element_text(face = "bold", size = 16),
+    axis.title.y = element_blank()
+  )
+
+
+ragg::agg_png("Figuras/mensagens-aumento-drastico.png", width = 2200, height = 1400, res = 300)
+print(pl)
+dev.off()
+
